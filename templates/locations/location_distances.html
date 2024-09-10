@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Location Distances</title>
+</head>
+<body>
+    <h1>Distances from {{ selected_location.name }}</h1>
+    <ul>
+        {% for location in locations_with_distances %}
+            <li>{{ location.name }} - {{ location.distance.km }} km</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

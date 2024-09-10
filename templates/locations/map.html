@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map View</title>
+    {% load leaflet_tags %}
+    {% leaflet_js %}
+    {% leaflet_css %}
+</head>
+<body>
+    <h1>Location Map</h1>
+    <div id="map" style="height: 500px;"></div>
+
+    <script>
+        var map = L.map('map').setView([0, 0], 2);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+
+        {% for item in locations_with_distances %}
+            var marker = L.marker([{{ item.location.location.y }}, {{ item.location.location.x }}]).addTo(map);
+            var popupContent = "<b>{{ item.location.name }}</b><br><br><b>Distances to other locations:</b><br>";
+            
+            {% for dist in item.distances %}
+                popupContent += "{{ dist.name }}: {{ dist.distance.km|floatformat:2 }} km<br>";
+            {% endfor %}
+
+            marker.bindPopup(popupContent);
+        {% endfor %}
+    </script>
+</body>
+</html>

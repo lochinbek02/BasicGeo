@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Location Map</title>
+    {% load leaflet_tags %}
+    {% leaflet_js %}
+    {% leaflet_css %}
+</head>
+<body>
+    <h1>Location Map</h1>
+    <div id="map" style="height: 800px;"></div>
+    
+    <script>
+        var map = L.map('map').setView([0, 0], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+        }).addTo(map);
+
+        // Display the selected location
+        var selectedMarker = L.marker([{{ selected_location.location.y }}, {{ selected_location.location.x }}])
+            .addTo(map)
+            .bindPopup("<b>Tanlangan nuqta: {{ selected_location.name }}</b>").openPopup();
+
+        // Display nearby locations within the 10 km radius
+        {% for location in nearby_locations %}
+            var marker = L.marker([{{ location.location.y }}, {{ location.location.x }}]).addTo(map);
+            marker.bindPopup("<b>{{ location.name }}</b><br>Masofa: {{ location.distance.km|floatformat:2 }} km");
+        {% endfor %}
+
+        // Fit the map to show all points
+        var bounds = L.latLngBounds([{{ selected_location.location.y }}, {{ selected_location.location.x }}]);
+        {% for location in nearby_locations %}
+            bounds.extend([{{ location.location.y }}, {{ location.location.x }}]);
+        {% endfor %}
+        map.fitBounds(bounds);
+    </script>
+</body>
+</html>

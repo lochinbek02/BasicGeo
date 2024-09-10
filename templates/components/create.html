@@ -1,0 +1,14 @@
+{% extends 'layouts/home.html'%}
+
+{% load crispy_forms_tags %}
+{% block content%}
+<div class="container mt-4">
+    <form action="" method="POST">{% csrf_token %}
+        <div class="form-group">
+        {{ form|crispy }}
+        <input  class="btn btn-primary m-2" type="submit" value="Yaratish">
+    </div>
+    </form>
+</div>
+   
+{% endblock content%}

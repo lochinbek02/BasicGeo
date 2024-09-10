@@ -1,0 +1,62 @@
+{% extends 'layouts/home.html' %}
+
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<br>
+<div class="d-flex justify-content-end m-3">
+  <div class="m-2" style="display: block;"><strong >{{user.username}} </strong>  welcome to our site </div>
+
+
+
+
+  <form class="m-1" action="{% url 'logout' %}" method="post" style="display: inline-block;">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary" >Logout</button>
+  </form>
+  <form class="m-1" action="{% url 'password_change' %}" method="post" style="display: inline-block;">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary" >Parolni o'zgartirish</button>
+  </form>
+  <form class="m-1" action="{% url 'password_reset' %}" method="post" style="display: inline-block;">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary" >Parolni tiklash</button>
+  </form>
+  <form class="m-1" action="{% url 'signup' %}" method="post" style="display: inline-block;">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary" >Registratsiya</button>
+  </form>
+  
+</div>
+<h1>Document</h1>
+<div class="row m-2">
+{% for post in posts %}
+<div class="card m-2" style="width: 18rem;">
+    <img class="card-img-top" src="..." alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">Nomi <span>: </span>{{post.name}}</h5>
+      <p>Manzili <span>: </span><strong>{{post.location}}</strong></p>
+      <p>x-kordinata <span>: </span><strong>{{post.kordinata1}}</strong></p>
+        
+        <p>y-kordinata <span>: </span><strong>{{post.kordinata2}}</strong></p>
+        <p>Yaratuvchi <span>: </span><strong>{{post.author}}</strong></p>
+      
+      <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+      <a href="{% url 'showpost' post.pk %}" class="btn btn-primary">Go somewhere</a>
+    </div>
+    <a href="{% url 'update' post.pk %}"> Postni yangilash</a>
+    <a href="{% url 'delete' post.pk %}"> Postni o'chirish</a>
+    <a href="{% url 'create'  %}"> Post yaratish</a>
+
+  </div>
+  {% endfor %}
+</div>
+{%else %}
+  <h1>Saytga kirmagansiz</h1>
+  <a href="{% url 'login' %}">Login</a>
+ 
+{% endif %}
+   
+
+{% endblock content %}

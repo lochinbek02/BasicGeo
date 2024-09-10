@@ -1,0 +1,14 @@
+{% extends 'layouts/home.html'%}
+
+
+{% block content%}
+<div class="container mt-5">
+    
+    <h1>O'chirish</h1>
+    <form action="" method="POST">{% csrf_token %}
+        <p><strong>{{posts.name}}<span style="color: red;">*</span></strong> o'chirishni istaysizmi?</p>
+        <input   class="btn btn-primary m-2" type="submit" value="O'chirish">
+    </form>
+</div>
+    
+{% endblock content%}
